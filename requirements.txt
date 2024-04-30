@@ -1,0 +1,11 @@
+requests
+numpy
+scikit-learn
+beautifulsoup4
+transformers
+torch
+openai
+python-dotenv
+faiss-cpu  # or 'faiss-gpu' for GPU support
+html2text
+
