@@ -10,7 +10,7 @@ def main(question=None, force_refresh=False, full_embed=False):
         print("Generating embeddings for the entire Confluence content...")
         download_and_embed_confluence()
         return
-    space_keys = ['CSAUS','CCS','CCFO','CPOS']
+    space_keys = ['CSAUS']
     if force_refresh or need_update(force_refresh):
         refresh_embeddings(space_keys)
     if question:
