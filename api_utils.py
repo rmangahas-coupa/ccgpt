@@ -54,19 +54,23 @@ def get_all_spaces():
 
 def get_all_page_ids(space_keys):
     all_page_ids = []
-    urls = [f"{BASE_URL}/content/?spaceKey={key}&start=0&limit=50" for key in space_keys]
-
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        future_to_url = {executor.submit(fetch_with_retry, url): url for url in urls}
-        for future in as_completed(future_to_url):
-            response = future.result()
-            json_data = response.json()
-            logging.debug(f"Data received for URL: {future_to_url[future]} is {json_data}")  # Log the JSON data
-            if json_data and 'results' in json_data and json_data['results']:
-                page_ids = [page['id'] for page in json_data['results']]
+    limit = 50  # Number of page IDs to retrieve per request
+    for space_key in space_keys:
+        start = 0
+        while True:
+            url = f"{BASE_URL}/content/?spaceKey={space_key}&start={start}&limit={limit}"
+            response = fetch_with_retry(url)
+            if response.status_code == 200:
+                json_data = response.json()
+                page_results = json_data.get('results', [])
+                page_ids = [page['id'] for page in page_results]
                 all_page_ids.extend(page_ids)
+                if len(page_results) < limit:
+                    break  # No more pages to fetch
+                start += limit
             else:
-                logging.warning(f"No results found or failed request for URL: {future_to_url[future]}")
+                logging.error(f"Failed to fetch page IDs for space key {space_key}")
+                break
     return all_page_ids
 
 def get_page_content(page_id):
