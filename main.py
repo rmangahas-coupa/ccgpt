@@ -15,7 +15,7 @@ def main(question=None, force_refresh=False, full_embed=False, model_name='all-M
         download_and_embed_confluence(model_name)
         return
 
-    space_keys = ['CSAUS']
+    space_keys = ['CSAUS','CCS']
     if force_refresh or need_update(force_refresh):
         logging.info("Refreshing embeddings...")
         refresh_embeddings(space_keys, model_name)

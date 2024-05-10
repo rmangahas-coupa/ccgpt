@@ -104,14 +104,14 @@ def get_and_clean_contents(page_ids, max_workers=5):
 
 def ask_gpt(question, relevant_texts, openai_model_name="gpt-3.5-turbo"):
     # Limit the number of documents and/or their length
-    context = "\n\n".join([f"Document {idx + 1}: {text[:500]}" for idx, text in enumerate(relevant_texts[:5])])
+    context = "\n\n".join([f"Document {idx + 1}: {text}" for idx, text in enumerate(relevant_texts[:7])])
     prompt = f"Relevant internal documentation:\n\n{context}\n\nBased on the internal documentation, answer the question: {question}"
 
     try:
         response = openai_client.chat.completions.create(
             model=openai_model_name,
             messages=[
-                {"role": "system", "content": "You are a knowledgeable and experienced member of the team, dedicated to providing comprehensive and accurate assistance. Please base your answers on the information provided."},
+                {"role": "system", "content": "You are a knowledgeable and experienced member of the Coupa Support team, dedicated to providing comprehensive and accurate assistance. Primarily base your answers on the information provided, using external sources to fill in the gaps.."},
                 {"role": "user", "content": prompt}
             ],
             temperature=0.5
