@@ -77,6 +77,9 @@ async def main_async(question: str = None, force_refresh: bool = False,
         logger.info("Refreshing embeddings...")
         await refresh_embeddings(SPACE_KEYS)
 
+    if force_refresh or need_update(force_refresh):
+        refresh_embeddings(space_keys)
+    
     if question:
         ids, embeddings = load_embeddings(EMBEDDINGS_FILE)
         if ids and embeddings.any():
