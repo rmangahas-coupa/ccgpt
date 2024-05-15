@@ -1,3 +1,6 @@
 .env
 embeddings.npy
+path_to_faiss_index
+last_update.txt
 myenv/
+cache/
